@@ -35,10 +35,12 @@ int main()
         {
             cout << "Press 1 for 'Yes', 0 for 'No'";
             cin >> replay;
+            if(replay == 0){
+                cout << "Okay Bye.... :-(\n";
+            }
         }
         else {
             replay = 0;
-            cout << "Okay Bye.... :-(\n";
         }
 
     } while (replay == 1);
@@ -51,18 +53,13 @@ string answer(int user_input){
 
     if (user_input == 1){
 
-        cout << "You chose Rock. Your opponent is deciding...\n";
-
         return "Paper";
     }
     else if (user_input == 2){
 
-        cout << "You chose Paper. Your opponent is deciding...\n";
-
         return "Scissors";
     }
     else {
-        cout << "You chose Scissors. Your opponent is deciding...\n";
 
         return "Rock";
     }
@@ -76,6 +73,7 @@ int outcome(int user_input, string ai_input){
         (user_input == 2 && ai_input == "Scissors") ||
         (user_input == 3 && ai_input == "Rock"))
         {
+            Sleep(1000);
             cout << "Sorry...you lost......Play again? :-D\n";
             return 0;
         }
