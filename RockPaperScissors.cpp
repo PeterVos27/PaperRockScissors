@@ -1,22 +1,26 @@
 #include <iostream>
 #include <windows.h>
+#include <ctime>
 
 using namespace std;
 
 int input;
-string ai_response;
-int replay;
+int ai_response;
+char replay;
 int win;
+int ran_num;
 
-string answer(int user_input);
-int outcome(int user_input, string ai_input);
+int answer(int user_input);
+void outcome(int user_input, int ai_input);
 
 int main()
 {
-    cout << "\n\n\n\nWelcome to my little game. This is a small game i made for the first time!\n\n";
+    //intro
+    cout << "\n\n\n\nWelcome to my little game. This is a small game I made for the first time!\n\n";
     cout << "You are going to play Rock, Paper, Scissors against me.\n\n";
     cout << "Please enter the number of your choice of attack and press 'Enter'\n";
     
+    //run at least once and check for valid response, if not skip functions and loop again
     do
     {
         cout << "Press...\n";
@@ -24,62 +28,84 @@ int main()
         cout << "[2] for Paper'\n";
         cout << "[3] for Scissors\n";
         cin >> input;
-
-        ai_response = answer(input);
-
-        cout << "Your opponent chose... " << ai_response << "\n\n\n";
-
-
-        int win = outcome(input,ai_response);
-        if(win == 0)
+        if( input < 1 || input > 3)
         {
-            cout << "Press 1 for 'Yes', 0 for 'No'";
-            cin >> replay;
-            if(replay == 0){
-                cout << "Okay Bye.... :-(\n";
-            }
+            cout << "Invalid number.\n";
         }
-        else {
-            replay = 0;
-        }
+        else
+        {
+            ai_response = answer(input);
+            outcome(input,ai_response);   
 
-    } while (replay == 1);
+        //run at least once and check for valid replay response, if not, keep looping
+            do
+            {
+                cout << "Want to play again? y/n \n";
+                cin >> replay;
+                
+                if(replay == 'y'){
+                    cout << "Okay Let's go!\n";
+                }
+                else if (replay == 'n'){
+                    cout << "Okay, Bye!\n";
+                }
+                else {
+                    cout << "Not a valid response. Try again\n";
+                }    
+            } while (replay != 'y' && replay != 'n');
+        }
+    } while (replay != 'n');
     
 }
 
 
 // Opponent answer function
-string answer(int user_input){
 
-    if (user_input == 1){
-
-        return "Paper";
+int answer(int user_input){ // user input num to output string
+    cout << "You chose ";
+    if(user_input ==1) {
+        cout << "Rock\n";
     }
-    else if (user_input == 2){
-
-        return "Scissors";
+    else if(user_input == 2) {
+        cout << "Paper\n";
     }
     else {
-
-        return "Rock";
+        cout << "Scissors\n";
     }
+
+    srand(time(0)); //seed rng with current time
+    int ran_num = (rand() % 3) + 1; //get random number from generator and add 1, so answer is always 1,2 or 3
+    cout << "your opponent chose ";
+    if( ran_num == 1){
+        cout << "Rock\n";
+    }
+    else if(ran_num == 2){
+        cout << "Paper\n";
+    }
+    else {
+        cout << "Scissors\n";
+    }
+    
+    return ran_num;
+    
 }
 
 
 // check outcome function
-int outcome(int user_input, string ai_input){
-    
-    if((user_input == 1 && ai_input == "Paper") ||
-        (user_input == 2 && ai_input == "Scissors") ||
-        (user_input == 3 && ai_input == "Rock"))
-        {
-            Sleep(1000);
-            cout << "Sorry...you lost......Play again? :-D\n";
-            return 0;
-        }
-    else 
+void outcome(int user_input, int ai_input){
+    Sleep(1000); // minor delay for visual purpose
+    if(user_input == ai_input)
     {
-        cout << "Yes...You won...I dont want to play anymore...Byebye";
-        return 1;
+        cout << "Draw!\n";
+    }
+    else if ((user_input == 1 && ai_input == 2) ||
+        (user_input == 2 && ai_input == 3) ||
+        (user_input == 3 && ai_input == 1)){
+            
+        cout << "Sorry, you lost...\n";     
+        
+    }
+    else {
+        cout << "You won!\n";
     }    
 }
